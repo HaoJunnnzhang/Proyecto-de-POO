@@ -23,7 +23,7 @@ public class Menu {
             System.out.println("1. Ver catalogo");
             System.out.println("2. Alquilar juego");
             System.out.println("3. Devolver juego");
-            System.out.println("4. Aniadir juego");
+            System.out.println("4. Añadir juego");
             System.out.println("5. Eliminar juego");
             System.out.print("Elige opcion: ");
             opcion = sc.nextInt();
@@ -58,6 +58,7 @@ public class Menu {
                 tienda.alquilarJuego(idAlquiler, diasAlquiler);
 
             } else if (opcion == 3) {
+            	System.out.print("Ingresa el ID del juego a devolver: ");
                 tienda.devolverJuego(sc.nextLine());
 
             } else if (opcion == 4) {
@@ -79,6 +80,7 @@ public class Menu {
                 }
 
             } else if (opcion == 5) {
+            	System.out.print("Ingresa el ID del juego a eliminar: ");
                 tienda.eliminarJuego(sc.nextLine());
 
             } else if (opcion == 0) {
