@@ -3,7 +3,7 @@ package com.gamerent.model;
 import java.util.Scanner;
 
 public class Menu {
-     public static void main(String[] args) {
+    public static void main(String[] args) {
         TiendaAlquiler tienda = TiendaAlquiler.getInstancia();
         Scanner sc = new Scanner(System.in);
         Videojuego juego1 = new VideojuegoNovedad("J001", "Elden Ring", 3.00);
@@ -13,7 +13,8 @@ public class Menu {
         tienda.agregarJuego(juego2);
         tienda.agregarJuego(juego3);
 
-        int opcion;
+        String opcion;
+        int opcionInt = -1; 
 
         do {
             System.out.println("\n==============================");
@@ -26,13 +27,22 @@ public class Menu {
             System.out.println("4. Añadir juego");
             System.out.println("5. Eliminar juego");
             System.out.print("Elige opcion: ");
-            opcion = sc.nextInt();
-            sc.nextLine();
-             System.out.println("------------------------------");
+            
+    
+            opcion = sc.nextLine(); 
+            
+            try {
+                opcionInt = Integer.parseInt(opcion);
+            } catch (NumberFormatException e) {
+                System.out.println("------------------------------");
+                System.out.println("Error: Opción no válida. introduce un número.");
+            
+                continue; 
+            }
+            
+            System.out.println("------------------------------");
 
-        
-
-            if (opcion == 1) {
+            if (opcionInt == 1) {
                 for (Videojuego juego : tienda.getListaJuegos()) {
                     if (juego instanceof VideojuegoNovedad ) {
                         ((VideojuegoNovedad) juego).mostrarDetalles();
@@ -42,7 +52,7 @@ public class Menu {
                     }
                 }
 
-            } else if (opcion == 2) {
+            } else if (opcionInt == 2) {
                 for (Videojuego juego : tienda.getListaJuegos()) {
                     if (juego instanceof VideojuegoNovedad ) {
                         ((VideojuegoNovedad) juego).mostrarDetalles();
@@ -57,33 +67,45 @@ public class Menu {
                 String diasAlquiler = sc.nextLine();
                 tienda.alquilarJuego(idAlquiler, diasAlquiler);
 
-            } else if (opcion == 3) {
-            	System.out.print("Ingresa el ID del juego a devolver: ");
+            } else if (opcionInt == 3) {
+                System.out.print("Ingresa el ID del juego a devolver: ");
                 tienda.devolverJuego(sc.nextLine());
 
-            } else if (opcion == 4) {
+            } else if (opcionInt == 4) {
                 System.out.print("Tipo de juego (novedad/retro): ");
                 String tipo = sc.nextLine();
                 System.out.print("ID del juego: ");
                 String id = sc.nextLine();
                 System.out.print("Titulo del juego: ");
                 String titulo = sc.nextLine();
-                System.out.print("Precio base: ");
-                double precio = sc.nextDouble();
+                
+                double precio = 0.0;
+                boolean precioValido = false;
+                while (!precioValido) {
+                    System.out.print("Precio base: ");
+                    try {
+                        precio = sc.nextDouble();
+                        precioValido = true; 
+                    } catch (java.util.InputMismatchException e) {
+                        System.out.println("Error: Formato inválido. Por favor, introduce un número.");
+                        sc.nextLine(); 
+                    }
+                }
                 sc.nextLine(); 
 
                 try {
                     Videojuego nuevoJuego = VideojuegosFactry.crearVideojuego(tipo, id, titulo, precio);
                     tienda.agregarJuego(nuevoJuego);
+                    System.out.println("Juego añadido correctamente.");
                 } catch (IllegalArgumentException e) {
                     System.out.println(e.getMessage());
                 }
 
-            } else if (opcion == 5) {
-            	System.out.print("Ingresa el ID del juego a eliminar: ");
+            } else if (opcionInt == 5) {
+                System.out.print("Ingresa el ID del juego a eliminar: ");
                 tienda.eliminarJuego(sc.nextLine());
 
-            } else if (opcion == 0) {
+            } else if (opcionInt == 0) {
                 System.out.println("Gracias por usar Gamerent. " + "Total: " + tienda.getprecio());
                 System.out.println("Hasta pronto!");
 
@@ -91,8 +113,9 @@ public class Menu {
                 System.out.println("Opcion no valida.");
             }
 
-        } while (opcion != 0);
+        } while (opcionInt != 0);
 
         sc.close();
     }
 }
+

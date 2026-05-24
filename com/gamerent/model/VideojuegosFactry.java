@@ -7,7 +7,7 @@ public class VideojuegosFactry {
         } else if (tipo.equalsIgnoreCase("retro")) {
             return new VideojuegoRetro(id, titulo, precioBase);
         } else {
-            throw new IllegalArgumentException("Tipo de videojuego no válido: " );
+            throw new IllegalArgumentException("Tipo de videojuego no válido: "  + tipo);
         }
     }
 }
